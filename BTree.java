@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class BTree {
     final int MAX_LEAF_SIZE = 7;    //TODO--figure out the actual size I want the leaves to be
     Node root = null;
@@ -6,13 +8,13 @@ public class BTree {
         root = new Node(null, MAX_LEAF_SIZE);
     }
 
-    public BTree(int data) {        //TODO      change int data to string data
+    public BTree(Key data) {        //TODO      change int data to string data
         root = new Node(null, MAX_LEAF_SIZE);
         insert(data);
 //
     }
 
-    public void insert(int data) {
+    public void insert(Key data) {
         Node current = root;
         while (!current.isLeaf()) {
             if (current.isFull()) {
@@ -22,23 +24,23 @@ public class BTree {
                 }
             }
 
-            if (data < current.data[0]) {
+            if (data.compareTo(current.data[0]) < 0) {
                 current = current.child[0];
-            } else if (data > current.getLast()) {
+            } else if (data.compareTo(current.getLast()) > 0) {
                 current = current.child[current.indexOf(current.getLast())+1];
             } else {
                 for (int i = 0; i < current.data.length; i++) {
-                    if (data > current.data[i] && data < current.data[i+1]) {
+                    if (data.compareTo(current.data[i]) > 0 && data.compareTo(current.data[i+1]) < 0) {
                         current = current.child[i+1];   //right child of lesser key
                     }
                 }
             }
-            //TODO
+
             break;
         }
 
         if (current.isFull()) {
-            int median = current.split();
+            Key median = current.split();
             if (current == root) {
                 root = current.parent;
             }
@@ -50,7 +52,7 @@ public class BTree {
                 current = parent.child[parent.indexOf(median)+1];
                 current.insert(data);
             }
-            //TODO
+
         } else {
             current.insert(data);
         }

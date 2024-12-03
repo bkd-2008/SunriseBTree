@@ -1,5 +1,5 @@
 public class Node {
-    int[] data;
+    Key[] data;
     //    int hr, min, sec;
     //    boolean isAM;
 
@@ -9,7 +9,7 @@ public class Node {
 
     public Node(Node parent, int leafLength) {
         this.parent = parent;
-        this.data = new int[leafLength];
+        this.data = new Key[leafLength];
         this.child = new Node[leafLength+1];
     }
 
@@ -19,22 +19,22 @@ public class Node {
 
     public boolean isFull() {
         for (int i = 0; i < data.length; i++) {
-            if (data[i] == 0) {     //nodes cannot hold 0 values
+            if (data[i] == null) {     //nodes cannot hold 0 values
                 return false;
             }
         }
         return true;
     }
     
-    public int split() {
+    public Key split() {
         int medianIndex = data.length / 2;
         if (data.length % 2 == 0) {
             medianIndex--;       //ensures actual median in case of odd data length
         }
-        int median = data[medianIndex];
-        //pushUp(median);   //TODO--method to send median to parent
+        Key median = data[medianIndex];
 
-        if (parent == null) {       //TODO--BTree needs to be able to set new root
+        //send median to parent
+        if (parent == null) {       //TODO--ensure child arrays are saved when parent changes
             parent = new Node(null, data.length);
         }
 
@@ -55,20 +55,11 @@ public class Node {
             index++;
         }
         return median;      //to compare inserted value with in BTree
-    } 
-
-    //might not need to be a separate method
-//    public void pushUp(int median) {
-//        if (parent == null) {       //TODO--BTree needs to be able to set new root
-//            parent = new Node(null, data.length);
-//        }
-//
-//        parent.insert(median);
-//    }
+    }
     
-    public void insert(int data) {
+    public void insert(Key data) {
         for (int i = 0; i < this.data.length; i++) {
-            if (data > this.data[i] && this.data[i] != 0) {
+            if (data.compareTo(this.data[i]) > 0 && this.data[i] != null) {
                 continue;
             }
             for (int j = this.data.length-1; j > i; j--) {
@@ -79,22 +70,22 @@ public class Node {
         }
     }
 
-    public int indexOf(int n) {
+    public int indexOf(Key n) {
         for (int i = 0; i < data.length; i++) {
-            if (n == data[i]) {
+            if (n.equals(data[i])) {
                 return i;
             }
         }
         return -1;  //n not in node
     }
 
-    public int getLast() {
+    public Key getLast() {
         int i = data.length-1;
-        while (i >= 0 && data[i] == 0) {
+        while (i >= 0 && data[i] == null) {
             i--;
         }
         if (i < 0) {
-            return -1;
+            return null;
         } else {
             return data[i];
         }
