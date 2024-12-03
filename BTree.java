@@ -19,6 +19,19 @@ public class BTree {
             break;
         }
 
-        
+        if (current.isFull()) {
+            //TODO
+        } else {
+            for (int i = 0; i < current.data.length; i++) {
+                if (data > current.data[i] && current.data[i] != 0) {
+                    continue;
+                }
+                for (int j = current.data.length-1; j > i; j--) {
+                    current.data[j] = current.data[j-1];
+                }
+                current.data[i] = data;
+                break;
+            }
+        }
     }
 }

@@ -13,12 +13,7 @@ public class Node {
     }
 
     public boolean isLeaf() {
-        for (Node node : child) {
-            if (node != null) {
-                return false;
-            }
-        }
-        return true;
+        return child == null;
     }
 
     public boolean isFull() {
