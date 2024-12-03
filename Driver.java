@@ -10,5 +10,12 @@ public class Driver {
         demo.insert(12);
         demo.insert(15);
         demo.insert(100);
+        demo.insert(14);
+        demo.insert(2);
+        demo.insert(50);
+        demo.insert(25);
+        demo.insert(66);
+        demo.insert(70);
+
     }
 }
