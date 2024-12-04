@@ -53,4 +53,9 @@ public class BTree {
             current.insert(data);
         }
     }
+
+    @Override
+    public String toString() {
+        return root.toString();
+    }
 }
