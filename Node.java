@@ -51,7 +51,7 @@ public class Node {
             leftSplit.data[i] = data[i];
             leftSplit.child[i] = this.child[i];
         }
-        leftSplit.child[medianIndex-1] = this.child[medianIndex];   //should copy edge child of LS?
+        leftSplit.child[medianIndex] = this.child[medianIndex];   //should copy edge child of LS?
 
         int index = 0;  //to be able to track rightsplit index while copying from this' index
         for (int i = medianIndex+1; i < data.length; i++) {
@@ -59,7 +59,7 @@ public class Node {
             rightSplit.child[index] = this.child[i];
             index++;
         }
-        rightSplit.child[index+1] = this.child[data.length];        //should copy edge child of RS?
+        rightSplit.child[index] = this.child[data.length];        //should copy edge child of RS?
         return median;      //to compare inserted value with in BTree
     } 
 
@@ -99,18 +99,20 @@ public class Node {
 
     @Override
     public String toString() {
+        //TODO--modify to only return values in this node
         String ret = "";
 
         for (int i = 0; i < data.length; i++) {
             if (child[i] != null) {
-                ret += child[i].toString() + ", ";
+                ret += child[i].toString();         // + ", ";
             }
             if (data[i] != 0) {
                 ret += data[i] + ", ";
             }
         }
-        ret += child[data.length];
-
+        if (child[data.length] != null) {
+            ret += child[data.length];
+        }
         return ret;
     }
 }
