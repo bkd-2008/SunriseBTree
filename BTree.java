@@ -33,7 +33,6 @@ public class BTree {
                     }
                 }
             }
-            //TODO
             break;
         }
 
@@ -50,7 +49,6 @@ public class BTree {
                 current = parent.child[parent.indexOf(median)+1];
                 current.insert(data);
             }
-            //TODO
         } else {
             current.insert(data);
         }

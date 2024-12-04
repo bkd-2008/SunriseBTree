@@ -32,15 +32,16 @@ public class Node {
             medianIndex--;       //ensures actual median in case of odd data length
         }
         int median = data[medianIndex];
-        //pushUp(median);   //TODO--method to send median to parent
 
-        if (parent == null) {       //TODO--BTree needs to be able to set new root
+        if (parent == null) {
             parent = new Node(null, data.length);
         }
 
         parent.insert(median);
 
 
+        //TODO--replace with arrays.copyofrange
+        //TODO--need to get children to persist after split
         parent.child[parent.indexOf(median)] = new Node(parent, data.length);
         parent.child[parent.indexOf(median)+1] = new Node(parent, data.length);
         Node leftSplit = parent.child[parent.indexOf(median)];
@@ -48,6 +49,7 @@ public class Node {
 
         for (int i = 0; i < medianIndex; i++) {
             leftSplit.data[i] = data[i];
+//            leftSplit.child[i] = this.child[i];
         }
         int index = 0;  //to be able to track rightsplit index while copying from this' index
         for (int i = medianIndex+1; i < data.length; i++) {
@@ -57,15 +59,6 @@ public class Node {
         return median;      //to compare inserted value with in BTree
     } 
 
-    //might not need to be a separate method
-//    public void pushUp(int median) {
-//        if (parent == null) {       //TODO--BTree needs to be able to set new root
-//            parent = new Node(null, data.length);
-//        }
-//
-//        parent.insert(median);
-//    }
-    
     public void insert(int data) {
         for (int i = 0; i < this.data.length; i++) {
             if (data > this.data[i] && this.data[i] != 0) {
