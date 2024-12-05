@@ -41,7 +41,6 @@ public class Node {
 
 
         //TODO--replace with arrays.copyofrange
-        //TODO--need to get children to persist after split
         parent.child[parent.indexOf(median)] = new Node(parent, data.length);
         parent.child[parent.indexOf(median)+1] = new Node(parent, data.length);
         Node leftSplit = parent.child[parent.indexOf(median)];
@@ -99,20 +98,24 @@ public class Node {
 
     @Override
     public String toString() {
-        //TODO--modify to only return values in this node
         String ret = "";
 
-        for (int i = 0; i < data.length; i++) {
-            if (child[i] != null) {
-                ret += child[i].toString();         // + ", ";
-            }
-            if (data[i] != 0) {
-                ret += data[i] + ", ";
-            }
+        int i = 0;
+        while (i < data.length && data[i] != 0) {
+            ret += data[i] + ", ";
+            i++;
         }
-        if (child[data.length] != null) {
-            ret += child[data.length];
-        }
+//        for (int i = 0; i < data.length; i++) {
+//            if (child[i] != null) {
+//                ret += child[i].toString();         // + ", ";
+//            }
+//            if (data[i] != 0) {
+//                ret += data[i] + ", ";
+//            }
+//        }
+//        if (child[data.length] != null) {
+//            ret += child[data.length];
+//        }
         return ret;
     }
 }

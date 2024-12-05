@@ -23,6 +23,6 @@ public class Driver {
         for (int i = 1; i < 101; i++) {
             demo.insert(i);
         }
-        System.out.println(demo.toString());
+        System.out.println(demo);
     }
 }
