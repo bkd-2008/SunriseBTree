@@ -57,7 +57,6 @@ public class BTree {
                     }
                 }
             }
-//            break;
         }
 
         if (current.isFull()) {

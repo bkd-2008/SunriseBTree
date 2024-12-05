@@ -13,10 +13,21 @@ public class Node {
         this.child = new Node[leafLength+1];
     }
 
+    /**
+     * Method to check if this node is a leaf or not.
+     *
+     * @return True if the first element in the child array is null, false otherwise.
+     */
     public boolean isLeaf() {
         return child[0] == null;
     }
 
+    /**
+     * Method to check if this node's key array is full.
+     * Key array is full if all ints are non-zero values.
+     *
+     * @return False if any element in the keys array is zero, true otherwise.
+     */
     public boolean isFull() {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == 0) {     //nodes cannot hold 0 values
@@ -53,7 +64,7 @@ public class Node {
                 leftSplit.child[i].parent = leftSplit;
             }
         }
-        leftSplit.child[medianIndex] = this.child[medianIndex];   //should copy edge child of LS?
+        leftSplit.child[medianIndex] = this.child[medianIndex];   //copies edge child of LS
         if (leftSplit.child[medianIndex] != null) {
             leftSplit.child[medianIndex].parent = leftSplit;
         }
@@ -67,13 +78,19 @@ public class Node {
             }
             index++;
         }
-        rightSplit.child[index] = this.child[keys.length];        //should copy edge child of RS?
+        rightSplit.child[index] = this.child[keys.length];        //copies edge child of RS
         if (rightSplit.child[index] != null) {
             rightSplit.child[index].parent = rightSplit;
         }
         return median;      //to compare inserted value with in BTree
-    } 
+    }
 
+    /**
+     * Inserts a new key into the keys array. Moves all greater
+     * keys one index right, then inserts the new key.
+     *
+     * @param data The new key to be inserted.
+     */
     public void insert(int data) {
         for (int i = 0; i < this.keys.length; i++) {
             if (data > this.keys[i] && this.keys[i] != 0) {
@@ -87,6 +104,12 @@ public class Node {
         }
     }
 
+    /**
+     * Finds the index in this node of a given key.
+     *
+     * @param n The key whose index is being sought.
+     * @return The index of n, or -1 if n is not in this node.
+     */
     public int indexOf(int n) {
         for (int i = 0; i < keys.length; i++) {
             if (n == keys[i]) {
@@ -96,6 +119,12 @@ public class Node {
         return -1;  //n not in node
     }
 
+    /**
+     * Method to tell if this node contains a given key.
+     *
+     * @param n The key being queried.
+     * @return True if an element in the keys array equals n, false otherwise.
+     */
     public boolean contains(int n) {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == n) {
@@ -105,6 +134,11 @@ public class Node {
         return false;
     }
 
+    /**
+     * Finds the last non-zero value in this keys array.
+     *
+     * @return The value stored at the last non-zero entry in the keys array.
+     */
     public int getLast() {
         int i = keys.length-1;
         while (i >= 0 && keys[i] == 0) {
@@ -126,17 +160,6 @@ public class Node {
             ret += keys[i] + ", ";
             i++;
         }
-//        for (int i = 0; i < data.length; i++) {
-//            if (child[i] != null) {
-//                ret += child[i].toString();         // + ", ";
-//            }
-//            if (data[i] != 0) {
-//                ret += data[i] + ", ";
-//            }
-//        }
-//        if (child[data.length] != null) {
-//            ret += child[data.length];
-//        }
         return ret;
     }
 }
