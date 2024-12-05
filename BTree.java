@@ -1,5 +1,7 @@
 public class BTree {
-    final int MAX_LEAF_SIZE = 7;    //TODO--figure out the actual size I want the leaves to be
+    final int DEGREE = 4;
+    final int MAX_LEAF_SIZE = (2 * DEGREE) - 1;    //TODO--figure out the actual size I want the leaves to be
+    final int MIN_LEAF_SIZE = DEGREE-1;
     Node root = null;
 
     public BTree() {
@@ -12,6 +14,28 @@ public class BTree {
 //
     }
 
+    public Node search(int data) {
+        Node current = root;
+        while (current != null) {
+            if (current.contains(data)) {
+                return current;
+            }
+
+            if (data < current.keys[0]) {       //checks if in leftmost child first
+                current = current.child[0];
+            }
+
+            for (int i = 0; i <= current.indexOf(current.getLast()); i++) {
+                if (data < current.keys[i+1] || current.keys[i+1] == 0) {         //then checks if in right children
+                    current = current.child[i+1];
+                    break;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public void insert(int data) {
         Node current = root;
         while (!current.isLeaf()) {
@@ -22,13 +46,13 @@ public class BTree {
                 }
             }
 
-            if (data < current.data[0]) {
+            if (data < current.keys[0]) {
                 current = current.child[0];
             } else if (data > current.getLast()) {
                 current = current.child[current.indexOf(current.getLast())+1];
             } else {
-                for (int i = 0; i < current.data.length; i++) {
-                    if (data > current.data[i] && data < current.data[i+1]) {
+                for (int i = 0; i < current.keys.length; i++) {
+                    if (data > current.keys[i] && data < current.keys[i+1]) {
                         current = current.child[i+1];   //right child of lesser key
                     }
                 }

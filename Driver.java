@@ -23,6 +23,9 @@ public class Driver {
         for (int i = 1; i < 101; i++) {
             demo.insert(i);
         }
+
+        Node foundNode = demo.search(95);
         System.out.println(demo);
+        System.out.println(foundNode);
     }
 }
