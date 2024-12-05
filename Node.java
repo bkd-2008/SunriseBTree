@@ -49,16 +49,28 @@ public class Node {
         for (int i = 0; i < medianIndex; i++) {
             leftSplit.data[i] = data[i];
             leftSplit.child[i] = this.child[i];
+            if (leftSplit.child[i] != null) {
+                leftSplit.child[i].parent = leftSplit;
+            }
         }
         leftSplit.child[medianIndex] = this.child[medianIndex];   //should copy edge child of LS?
+        if (leftSplit.child[medianIndex] != null) {
+            leftSplit.child[medianIndex].parent = leftSplit;
+        }
 
         int index = 0;  //to be able to track rightsplit index while copying from this' index
         for (int i = medianIndex+1; i < data.length; i++) {
             rightSplit.data[index] = data[i];
             rightSplit.child[index] = this.child[i];
+            if (rightSplit.child[index] != null) {
+                rightSplit.child[index].parent = rightSplit;
+            }
             index++;
         }
         rightSplit.child[index] = this.child[data.length];        //should copy edge child of RS?
+        if (rightSplit.child[index] != null) {
+            rightSplit.child[index].parent = rightSplit;
+        }
         return median;      //to compare inserted value with in BTree
     } 
 
