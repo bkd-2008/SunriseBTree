@@ -26,7 +26,8 @@ public class Driver {
 
         Node foundNode = demo.search(10);
         System.out.println(demo);
-        demo.delete(98);
+        demo.delete(93);
+        demo.delete(94);
         System.out.println(foundNode);
         System.out.println(foundNode.getDepth());
 

@@ -107,7 +107,30 @@ public class Node {
             }
             keys[indexOfKey(getLast())+1] = 0;     //needs to be +1 since getLast now returns one index too early
         } else if (this.isLeaf()) {     //ie, deletion would make the node too small
+            int locInParent = parent.indexOfChild(this);
+            int leftParentKey = locInParent-1;
+            int rightParentKey = locInParent;
 
+            Node leftSibling = null;
+            Node rightSibling = null;
+            if (locInParent != 0) {
+                leftSibling = parent.child[parent.indexOfChild(this) - 1];
+            }
+            if (locInParent != parent.indexOfKey(parent.getLast())+1) {
+                rightSibling = parent.child[parent.indexOfChild(this) + 1];
+            }
+
+            if ((leftSibling != null) && (leftSibling.getLength() > MIN_LENGTH)) {
+                int predecessor = leftSibling.getLast();
+                this.insert(parent.keys[leftParentKey]);
+                parent.keys[leftParentKey] = predecessor;
+                leftSibling.delete(predecessor);
+            } else if ((rightSibling != null) && (rightSibling.getLength() > MIN_LENGTH)) {
+                int successor = rightSibling.keys[0];
+                this.insert(parent.keys[rightParentKey]);
+                parent.keys[rightParentKey] = successor;
+                rightSibling.delete(successor);
+            }
         }
     }
 
