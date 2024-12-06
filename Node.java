@@ -26,15 +26,10 @@ public class Node {
      * Method to check if this node's key array is full.
      * Key array is full if all ints are non-zero values.
      *
-     * @return False if any element in the keys array is zero, true otherwise.
+     * @return False if length of node is less than length of key array, true otherwise.
      */
     public boolean isFull() {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == 0) {     //nodes cannot hold 0 values
-                return false;
-            }
-        }
-        return true;
+        return (getLength() == keys.length);
     }
     
     public int split() {
@@ -149,6 +144,39 @@ public class Node {
         } else {
             return keys[i];
         }
+    }
+
+    /**
+     * Finds the length of this node.
+     *
+     * @return The number of non-zero values stored in the keys array
+     */
+    public int getLength() {
+        int length = 0;
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] != 0) {
+                length++;
+            } else {
+                break;
+            }
+        }
+
+        return length;
+    }
+
+    /**
+     * Method to get the depth of this node in the larger tree.
+     *
+     * @return A count of the nodes between this and root, inclusive.
+     */
+    public int getDepth() {
+        int depth = 1;
+        Node current = this;
+        while (current.parent != null) {
+            current = current.parent;
+            depth++;
+        }
+        return depth;
     }
 
     @Override
