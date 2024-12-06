@@ -45,12 +45,11 @@ public class Node {
 
         parent.insert(median);
 
-
         //TODO--replace with arrays.copyofrange
-        parent.child[parent.indexOf(median)] = new Node(parent, keys.length);
-        parent.child[parent.indexOf(median)+1] = new Node(parent, keys.length);
-        Node leftSplit = parent.child[parent.indexOf(median)];
-        Node rightSplit = parent.child[parent.indexOf(median)+1];
+        parent.child[parent.indexOfKey(median)] = new Node(parent, keys.length);
+        parent.child[parent.indexOfKey(median)+1] = new Node(parent, keys.length);
+        Node leftSplit = parent.child[parent.indexOfKey(median)];
+        Node rightSplit = parent.child[parent.indexOfKey(median)+1];
 
         for (int i = 0; i < medianIndex; i++) {
             leftSplit.keys[i] = keys[i];
@@ -99,19 +98,47 @@ public class Node {
         }
     }
 
+    public void delete(int key) {
+        final int MIN_LENGTH = (keys.length-1)/2;
+        //((x+1) /2) -1) = ((x+1)-2)/2 = (x-1)/2
+        if ((this.isLeaf() && this.getLength() > MIN_LENGTH) || (this.parent == null && this.isLeaf())) {       //second condition covers edge case where root is leaf
+            for (int i = indexOfKey(key); i < indexOfKey(getLast()); i++) {
+                keys[i] = keys[i+1];
+            }
+            keys[indexOfKey(getLast())+1] = 0;     //needs to be +1 since getLast now returns one index too early
+        } else if (this.isLeaf()) {     //ie, deletion would make the node too small
+
+        }
+    }
+
     /**
-     * Finds the index in this node of a given key.
+     * Finds the first index in this node of a given key.
      *
      * @param n The key whose index is being sought.
-     * @return The index of n, or -1 if n is not in this node.
+     * @return The index of the first instance in this node of n, or -1 if n is not in this node.
      */
-    public int indexOf(int n) {
+    public int indexOfKey(int n) {
         for (int i = 0; i < keys.length; i++) {
             if (n == keys[i]) {
                 return i;
             }
         }
         return -1;  //n not in node
+    }
+
+    /**
+     * Finds where in this node a given node is stored.
+     *
+     * @param n The node being queried.
+     * @return The index in this node's child array that contains n, -1 if n is not found.
+     */
+    public int indexOfChild(Node n) {
+        for (int i = 0; i < this.child.length; i++) {
+            if (this.child[i] == n) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

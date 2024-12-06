@@ -24,9 +24,11 @@ public class Driver {
             demo.insert(i);
         }
 
-        Node foundNode = demo.search(1000);
+        Node foundNode = demo.search(10);
         System.out.println(demo);
+        demo.delete(98);
         System.out.println(foundNode);
         System.out.println(foundNode.getDepth());
+
     }
 }
