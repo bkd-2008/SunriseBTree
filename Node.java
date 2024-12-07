@@ -98,11 +98,13 @@ public class Node {
         }
     }
 
-    public void delete(int key) {
+    public void delete(int delKey) {
         final int MIN_LENGTH = (keys.length-1)/2;
         //((x+1) /2) -1) = ((x+1)-2)/2 = (x-1)/2
         if ((this.isLeaf() && this.getLength() > MIN_LENGTH) || (this.parent == null && this.isLeaf())) {       //second condition covers edge case where root is leaf
-            for (int i = indexOfKey(key); i < indexOfKey(getLast()); i++) {
+            int delIndex = indexOfKey(delKey);
+            keys[delIndex] = 0;
+            for (int i = delIndex; i < indexOfKey(getLast()); i++) {
                 keys[i] = keys[i+1];
             }
             keys[indexOfKey(getLast())+1] = 0;     //needs to be +1 since getLast now returns one index too early
@@ -111,25 +113,42 @@ public class Node {
             int leftParentKey = locInParent-1;
             int rightParentKey = locInParent;
 
-            Node leftSibling = null;
-            Node rightSibling = null;
-            if (locInParent != 0) {
-                leftSibling = parent.child[parent.indexOfChild(this) - 1];
-            }
-            if (locInParent != parent.indexOfKey(parent.getLast())+1) {
-                rightSibling = parent.child[parent.indexOfChild(this) + 1];
-            }
+            Node leftSibling = locInParent == 0 ? null : parent.child[parent.indexOfChild(this) - 1];
+            Node rightSibling = locInParent == parent.indexOfKey(parent.getLast()) ? null : parent.child[parent.indexOfChild(this) + 1];
 
-            if ((leftSibling != null) && (leftSibling.getLength() > MIN_LENGTH)) {
+            //TODO--handle cases where predecessor/successor don't come from immediate siblings, ie, left/right sibling is null
+            if ((leftSibling != null) && (leftSibling.getLength() > MIN_LENGTH)) {      //predecessor case
                 int predecessor = leftSibling.getLast();
                 this.insert(parent.keys[leftParentKey]);
                 parent.keys[leftParentKey] = predecessor;
                 leftSibling.delete(predecessor);
-            } else if ((rightSibling != null) && (rightSibling.getLength() > MIN_LENGTH)) {
+                delete(delKey);
+            } else if ((rightSibling != null) && (rightSibling.getLength() > MIN_LENGTH)) {     //successor case
                 int successor = rightSibling.keys[0];
                 this.insert(parent.keys[rightParentKey]);
                 parent.keys[rightParentKey] = successor;
                 rightSibling.delete(successor);
+                delete(delKey);
+            } else if (parent.getLength() > MIN_LENGTH) {       //merge with sibling case
+                int medianIndex = leftSibling == null ? rightParentKey : leftParentKey;
+                int newMedian = parent.keys[medianIndex];
+                Node mergingSibling = leftSibling == null ? rightSibling : leftSibling;
+                insert(newMedian);
+                for (int i = 0; i < mergingSibling.getLength(); i++) {      //getLength is never null b/c all leaves are at the same level
+                    insert(mergingSibling.keys[i]);
+                }
+
+                parent.child[parent.indexOfChild(mergingSibling)] = parent.child[parent.indexOfChild(this)];
+                for (int i = medianIndex; i < parent.indexOfKey(parent.getLast()); i++) {
+                    parent.keys[i] = parent.keys[i+1];
+                    parent.child[i+1] = parent.child[i+2];
+                }
+                parent.child[parent.getLength()] = null;
+                parent.keys[parent.getLength()-1] = 0;
+
+                delete(delKey);
+            } else {        //merge with parent case
+                //TODO
             }
         }
     }

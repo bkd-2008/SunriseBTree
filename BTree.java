@@ -59,6 +59,7 @@ public class BTree {
                 for (int i = 0; i < current.keys.length; i++) {
                     if (key > current.keys[i] && key < current.keys[i+1]) {
                         current = current.child[i+1];   //right child of lesser key
+                        break;
                     }
                 }
             }

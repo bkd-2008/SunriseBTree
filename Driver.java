@@ -28,6 +28,10 @@ public class Driver {
         System.out.println(demo);
         demo.delete(93);
         demo.delete(94);
+        demo.delete(86);
+        demo.insert(86);
+        demo.delete(98);
+        demo.delete(99);
         System.out.println(foundNode);
         System.out.println(foundNode.getDepth());
 
