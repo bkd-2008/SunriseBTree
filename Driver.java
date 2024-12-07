@@ -23,6 +23,17 @@ public class Driver {
         for (int i = 1; i < 101; i++) {
             demo.insert(i);
         }
-        System.out.println(demo.toString());
+
+        Node foundNode = demo.search(10);
+        System.out.println(demo);
+        demo.delete(93);
+        demo.delete(94);
+        demo.delete(86);
+        demo.insert(86);
+        demo.delete(98);
+        demo.delete(99);
+        System.out.println(foundNode);
+        System.out.println(foundNode.getDepth());
+
     }
 }
